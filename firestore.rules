@@ -1,0 +1,75 @@
+rules_version = '2';
+
+// Règles de sécurité : c'est ici que se joue la vérification d'identité.
+// - Seul l'organisateur (UID ci-dessous, compte Google) gère l'événement et les invitations.
+// - Un lien d'invitation ne peut être activé qu'une fois, par un seul navigateur.
+// - Un invité ne peut écrire que SA réponse, sous le nom fixé par l'organisateur.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isAdmin() {
+      // Remplacer par l'UID affiché sur admin.html après connexion Google.
+      return request.auth != null && request.auth.uid == 'UID_ORGANISATEUR';
+    }
+
+    function signedIn() { return request.auth != null; }
+    function memberPath(uid) { return /databases/$(database)/documents/members/$(uid); }
+    function invitePath(token) { return /databases/$(database)/documents/invites/$(token); }
+    function isMember() { return signedIn() && exists(memberPath(request.auth.uid)); }
+    function me() { return get(memberPath(request.auth.uid)).data; }
+
+    function validResponse() {
+      let d = request.resource.data;
+      return d.keys().hasOnly(['name', 'answers', 'games', 'comment', 'updatedAt'])
+        && d.name == me().name
+        && d.answers is map && d.answers.size() <= 30
+        && d.answers.values().hasOnly(['yes', 'maybe', 'no'])
+        && d.games is list && d.games.size() <= 50
+        && d.comment is string && d.comment.size() <= 500
+        && d.updatedAt == request.time;
+    }
+
+    // Dates, jeux, infos pratiques : lisibles par les invités, modifiables par l'organisateur.
+    match /config/{docId} {
+      allow read: if isMember() || isAdmin();
+      allow write: if isAdmin();
+    }
+
+    // invites/{token} : le token (128 bits aléatoires) est le secret du lien.
+    // On peut lire une invitation si on connaît son token, mais pas lister les invitations.
+    match /invites/{token} {
+      allow get: if signedIn();
+      allow list, create, delete: if isAdmin();
+      allow update: if isAdmin() || (
+        signedIn()
+        && resource.data.claimedBy == null
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['claimedBy', 'claimedAt'])
+        && request.resource.data.claimedBy == request.auth.uid
+        && request.resource.data.claimedAt == request.time
+        && getAfter(memberPath(request.auth.uid)).data.token == token
+      );
+    }
+
+    // members/{uid} : lie un navigateur (compte anonyme Firebase) à un invité.
+    // Créé dans la même écriture groupée que l'activation de l'invitation.
+    match /members/{uid} {
+      allow get: if isAdmin() || (signedIn() && request.auth.uid == uid);
+      allow delete: if isAdmin();
+      allow create: if signedIn() && request.auth.uid == uid
+        && request.resource.data.keys().hasOnly(['name', 'guestId', 'token', 'joinedAt'])
+        && request.resource.data.token is string
+        && get(invitePath(request.resource.data.token)).data.claimedBy == null
+        && getAfter(invitePath(request.resource.data.token)).data.claimedBy == uid
+        && request.resource.data.name == get(invitePath(request.resource.data.token)).data.name
+        && request.resource.data.guestId == get(invitePath(request.resource.data.token)).data.guestId
+        && request.resource.data.joinedAt == request.time;
+    }
+
+    // responses/{guestId} : visibles par tous les invités, chacun n'écrit que la sienne.
+    match /responses/{guestId} {
+      allow read: if isMember() || isAdmin();
+      allow create, update: if isMember() && me().guestId == guestId && validResponse();
+      allow delete: if isAdmin();
+    }
+  }
+}
