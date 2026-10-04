@@ -1,0 +1,7 @@
+firebase-debug.log
+*-debug.log
+.firebase/
+node_modules/
+.tests/test.rules
+.tests/firebase.json
+.tests/package-lock.json
