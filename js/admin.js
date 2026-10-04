@@ -65,7 +65,7 @@ function showNotAdmin(user) {
   showState(
     "Compte pas encore organisateur",
     `Tu es connecté avec ${user.email || "un compte Google"}, mais ce compte n'est pas encore déclaré dans les règles Firestore.`,
-    "Voici ton identifiant Firebase (UID). Il doit remplacer REMPLACER_PAR_TON_UID dans firestore.rules, puis les règles doivent être publiées :",
+    "Voici ton identifiant Firebase (UID). Il doit être enregistré dans le fichier .admin-uid du projet, puis les règles republiées avec node deploy-rules.mjs :",
     h("div", { class: "uid-row" },
       h("code", { class: "uid" }, user.uid),
       h("button", { class: "btn", type: "button", onclick: () => copy(user.uid, "UID copié") }, "Copier"),

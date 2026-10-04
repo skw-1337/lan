@@ -8,7 +8,8 @@ service cloud.firestore {
   match /databases/{database}/documents {
 
     function isAdmin() {
-      // UID Firebase de l'organisateur (compte Google), affiché sur admin.html après connexion.
+      // UID_ORGANISATEUR est remplacé au moment de publier (deploy-rules.mjs lit .admin-uid,
+      // un fichier local jamais publié sur GitHub).
       return request.auth != null && request.auth.uid == 'UID_ORGANISATEUR';
     }
 

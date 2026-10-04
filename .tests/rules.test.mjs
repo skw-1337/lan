@@ -1,7 +1,7 @@
 // Test des règles Firestore sur le vrai projet, avec des comptes anonymes jetables.
 // 1. Un compte « admin de test » est créé, et des règles où il est organisateur sont publiées.
 // 2. On rejoue les scénarios normaux et les tentatives de triche.
-// 3. On nettoie les données et les comptes de test, et on republie firestore.rules.
+// 3. On nettoie les données et les comptes de test, et on republie les vraies règles (deploy-rules.mjs).
 import { initializeApp } from "firebase/app";
 import { initializeAuth, inMemoryPersistence, signInAnonymously, deleteUser } from "firebase/auth";
 import {
@@ -155,8 +155,8 @@ try {
   });
 } finally {
   // ---------- 3. Retour aux vraies règles ----------
-  console.log("\nRepublication de firestore.rules…");
-  execSync(DEPLOY, { stdio: "inherit", cwd: ".." });
+  console.log("\nRepublication des vraies règles…");
+  execSync("node deploy-rules.mjs", { stdio: "inherit", cwd: ".." });
   for (const u of users) await deleteUser(u.auth.currentUser).catch(() => {});
 }
 

@@ -5,7 +5,7 @@ chaque invité reçoit un lien personnel, indique ses dispos et les jeux qui le 
 
 - `index.html` : page des invités
 - `admin.html` : page de l'organisateur (connexion Google)
-- `firestore.rules` : règles de sécurité, à publier dans la console Firebase
+- `firestore.rules` : règles de sécurité, publiées avec `node deploy-rules.mjs`
 
 ## Comment l'identité est vérifiée
 
@@ -29,9 +29,9 @@ réponses sont conservées. Même chose si un invité change de téléphone ou e
    - Paramètres du projet → Vos applications → Web → copier la config dans `js/firebase-config.js`.
 2. **GitHub Pages** : pousser ce dossier dans un dépôt public, puis Settings → Pages →
    Deploy from a branch → `main` / `(root)`.
-3. **Organisateur** : ouvrir `admin.html`, se connecter avec Google, copier l'UID affiché et le mettre
-   dans la fonction `isAdmin()` de `firestore.rules`.
-4. **Règles** : Firestore Database → Règles → coller le contenu de `firestore.rules` → Publier.
+3. **Organisateur** : ouvrir `admin.html`, se connecter avec Google, copier l'UID affiché dans un fichier
+   `.admin-uid` à la racine du projet. Ce fichier est ignoré par Git : l'UID n'est jamais publié sur GitHub.
+4. **Règles** : `node deploy-rules.mjs` insère l'UID dans les règles et les publie sur Firebase.
 
 ## Utilisation
 

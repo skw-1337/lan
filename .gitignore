@@ -6,3 +6,5 @@ node_modules/
 .tests/firebase.json
 .tests/package-lock.json
 .claude/
+.admin-uid
+firestore.deploy.rules
