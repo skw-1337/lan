@@ -56,7 +56,7 @@ const response = (name, extra = {}) => ({
 
 // ---------- 1. Règles de test ----------
 const admin = await newUser("admin");
-writeFileSync("test.rules", readFileSync("../firestore.rules", "utf8").replace("REMPLACER_PAR_TON_UID", admin.uid));
+writeFileSync("test.rules", readFileSync("../firestore.rules", "utf8").replace(/(function isAdmin\(\) \{[^}]*request\.auth\.uid == )'[^']*'/, `$1'${admin.uid}'`));
 writeFileSync("firebase.json", JSON.stringify({ firestore: { rules: "test.rules" } }));
 console.log("Publication des règles de test…");
 execSync(DEPLOY, { stdio: "inherit" });

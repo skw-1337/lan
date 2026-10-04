@@ -8,7 +8,7 @@ service cloud.firestore {
   match /databases/{database}/documents {
 
     function isAdmin() {
-      // Remplacer par l'UID affiché sur admin.html après connexion Google.
+      // UID Firebase de l'organisateur (compte Google), affiché sur admin.html après connexion.
       return request.auth != null && request.auth.uid == 'UID_ORGANISATEUR';
     }
 

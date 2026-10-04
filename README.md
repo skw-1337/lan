@@ -30,7 +30,7 @@ réponses sont conservées. Même chose si un invité change de téléphone ou e
 2. **GitHub Pages** : pousser ce dossier dans un dépôt public, puis Settings → Pages →
    Deploy from a branch → `main` / `(root)`.
 3. **Organisateur** : ouvrir `admin.html`, se connecter avec Google, copier l'UID affiché et le mettre
-   à la place de `REMPLACER_PAR_TON_UID` dans `firestore.rules`.
+   dans la fonction `isAdmin()` de `firestore.rules`.
 4. **Règles** : Firestore Database → Règles → coller le contenu de `firestore.rules` → Publier.
 
 ## Utilisation
