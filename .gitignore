@@ -8,3 +8,5 @@ node_modules/
 .claude/
 .admin-uid
 firestore.deploy.rules
+.tests/shots/
+.tests/chrome-profile/

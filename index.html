@@ -5,45 +5,113 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex, nofollow">
   <meta name="referrer" content="no-referrer">
+  <meta name="theme-color" content="#07090d">
   <title>LAN party</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%2307090d'/><circle cx='16' cy='16' r='8' fill='none' stroke='%232f9bff' stroke-width='2.5'/><path d='M16 3v7M16 22v7M3 16h7M22 16h7' stroke='%232f9bff' stroke-width='2.5'/></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;1,700;1,800&display=swap">
+  <link rel="preload" as="image" href="img/cs16-hero.jpg">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <header class="hero">
-    <div class="wrap">
-      <p class="kicker">Fake LAN · Radmin VPN</p>
-      <h1 id="title">LAN party</h1>
-      <p id="description" class="lead"></p>
-      <p id="whoami" class="whoami" hidden></p>
+  <header class="hero" id="top">
+    <div class="hero-media" aria-hidden="true">
+      <img class="hero-slide" src="img/cs16-hero.jpg" alt="" style="object-position: 85% 30%" fetchpriority="high">
+      <img class="hero-slide" src="img/wc3-hero.jpg" alt="" style="object-position: 50% 30%" decoding="async">
+      <img class="hero-slide" src="img/sc-hero.jpg" alt="" style="object-position: 55% 40%" decoding="async">
+      <img class="hero-slide" src="img/aoe2-hero.jpg" alt="" style="object-position: 88% 30%" decoding="async">
+      <img class="hero-slide" src="img/q3-hero.jpg" alt="" style="object-position: 70% 40%" decoding="async">
     </div>
+
+    <nav class="topbar" aria-label="Navigation" data-i18n-aria="nav.label">
+      <div class="wrap topbar-inner">
+        <a class="brand" href="./" aria-label="LAN party, accueil" data-i18n-aria="brand.home">
+          <svg class="brand-mark" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+            <circle cx="16" cy="16" r="8"/><path d="M16 3v7M16 22v7M3 16h7M22 16h7"/><circle cx="16" cy="16" r="1.5" fill="currentColor" stroke="none"/>
+          </svg>
+          <span>LAN<b>Party</b></span>
+        </a>
+        <div class="topbar-right">
+          <div class="lang-switch" role="group" aria-label="Langue" data-i18n-aria="lang.label">
+            <button type="button" data-lang="fr" aria-pressed="true">FR</button>
+            <button type="button" data-lang="en" aria-pressed="false">EN</button>
+          </div>
+          <p id="whoami" class="whoami" hidden></p>
+        </div>
+      </div>
+    </nav>
+
+    <div class="wrap hero-content">
+      <p class="eyebrow live" data-i18n="hero.eyebrow">Fake LAN · Radmin VPN</p>
+      <h1 id="title" class="hero-title">LAN party</h1>
+      <p id="description" class="hero-lead">Les classiques de la LAN, chacun chez soi.</p>
+      <div id="hero-actions" class="hero-actions" hidden>
+        <a id="cta-answer" class="btn primary" href="#reponse" data-i18n="hero.ctaAnswer">Donner mes dispos</a>
+        <a class="btn ghost" href="#qui-vient" data-i18n="hero.ctaBoard">Voir qui vient</a>
+      </div>
+      <dl id="hero-stats" class="hero-stats" hidden>
+        <div><dt data-i18n="stats.dates">Dates</dt><dd id="stat-dates">–</dd></div>
+        <div><dt data-i18n="stats.answers">Réponses</dt><dd id="stat-answers">–</dd></div>
+        <div><dt data-i18n="stats.best">Meilleure date</dt><dd id="stat-best">–</dd></div>
+      </dl>
+    </div>
+
+    <ol class="wrap hero-ticker" aria-hidden="true">
+      <li>Counter-Strike 1.6</li>
+      <li>Warcraft III</li>
+      <li>StarCraft</li>
+      <li>Age of Empires II</li>
+      <li>Quake III Arena</li>
+    </ol>
   </header>
 
-  <main class="wrap">
-    <section id="state" class="card state">
-      <h2>Chargement…</h2>
+  <main>
+    <div class="wrap">
+      <section id="state" class="panel state">
+        <p class="eyebrow" data-i18n="common.access">Accès</p>
+        <h2 data-i18n="common.loading">Chargement…</h2>
+      </section>
+    </div>
+
+    <section id="lineup" class="wrap section">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow" data-i18n="lineup.eyebrow">Au programme</p>
+          <h2 data-i18n="lineup.title">Le line-up</h2>
+        </div>
+        <p class="section-note" data-i18n="lineup.note">Réseau local virtuel avec Radmin VPN : chacun joue de chez soi, comme en LAN.</p>
+      </div>
+      <div id="lineup-grid" class="lineup"></div>
     </section>
 
-    <div id="app" hidden>
-      <section id="info-card" class="card" hidden>
-        <h2>Infos pratiques</h2>
+    <div id="app" class="wrap" hidden>
+      <section id="info-card" class="panel" hidden>
+        <p class="eyebrow" data-i18n="info.eyebrow">Briefing</p>
+        <h2 data-i18n="info.title">Infos pratiques</h2>
         <div id="info" class="info"></div>
       </section>
 
-      <section id="form-card" class="card">
-        <h2>Ma réponse</h2>
+      <section id="reponse" class="panel">
+        <p class="eyebrow" data-i18n="answer.eyebrow">À toi de jouer</p>
+        <h2 data-i18n="answer.title">Ma réponse</h2>
         <form id="form"></form>
       </section>
 
-      <section class="card">
-        <h2>Qui vient ?</h2>
+      <section id="qui-vient" class="panel">
+        <p class="eyebrow" data-i18n="board.eyebrow">Scoreboard</p>
+        <h2 data-i18n="board.title">Qui vient ?</h2>
         <div id="board"></div>
       </section>
     </div>
   </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <p class="footer-brand">LAN<b>Party</b></p>
+      <p class="footer-credits" data-i18n="footer.credits">Visuels © Valve (Counter-Strike), Blizzard Entertainment (Warcraft III, StarCraft), Microsoft (Age of Empires II), id Software (Quake III Arena). Site de fans non commercial, sans lien avec ces éditeurs.</p>
+    </div>
+  </footer>
 
   <script type="module" src="js/guest.js"></script>
 </body>

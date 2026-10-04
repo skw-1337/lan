@@ -4,7 +4,7 @@ import { getFirestore } from "https://www.gstatic.com/firebasejs/12.19.0/firebas
 import { firebaseConfig } from "./firebase-config.js";
 
 export {
-  onAuthStateChanged, signInAnonymously, signInWithPopup, signOut, GoogleAuthProvider,
+  onAuthStateChanged, signInAnonymously, signInWithEmailAndPassword, sendPasswordResetEmail, signOut,
 } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
 export {
   doc, collection, getDoc, getDocs, setDoc, onSnapshot, writeBatch, serverTimestamp,

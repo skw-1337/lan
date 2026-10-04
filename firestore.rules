@@ -21,12 +21,13 @@ service cloud.firestore {
 
     function validResponse() {
       let d = request.resource.data;
-      return d.keys().hasOnly(['name', 'answers', 'games', 'comment', 'updatedAt'])
+      return d.keys().hasOnly(['name', 'answers', 'games', 'comment', 'suggestion', 'updatedAt'])
         && d.name == me().name
         && d.answers is map && d.answers.size() <= 30
         && d.answers.values().hasOnly(['yes', 'maybe', 'no'])
         && d.games is list && d.games.size() <= 50
         && d.comment is string && d.comment.size() <= 500
+        && (!('suggestion' in d) || (d.suggestion is string && d.suggestion.size() <= 40))
         && d.updatedAt == request.time;
     }
 
